@@ -1,9 +1,14 @@
+import uuid
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class Product(models.Model):
 
-    id = models.CharField(primary_key=True, unique=True, max_length=100)
-    name = models.CharField(max_length=150, blank=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=150)
     price = models.FloatField()
-    stock = models.IntegerField(default=0)
+    stock = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.name} price: ${self.price} stock:{self.stock}"
