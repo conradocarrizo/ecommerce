@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from app.errors import InvalidProductStock, NotEnoughtStockError
+from app.errors import InvalidQuantityError , InvalidProductStock, NotEnoughtStockError
 from app.models.order_detail import OrderDetail
 from django.db.models.signals import pre_save, post_delete
 
@@ -10,28 +10,32 @@ from app.models.product import Product
 def pre_save_update_stock(sender, instance: OrderDetail, **kwargs):
 
     new_quantity = instance.quantity
+    if new_quantity > 0:
+        if not instance._state.adding and instance.pk:
+            prev_quantity = sender.objects.get(id=instance.pk).quantity
+            if new_quantity < prev_quantity:
+                difference = prev_quantity - new_quantity
+                instance.product.stock = instance.product.stock + difference
+            else:
+                difference = new_quantity - prev_quantity
+                instance.product.stock = instance.product.stock - difference
 
-    if not instance._state.adding and instance.pk:
-        prev_quantity = sender.objects.get(id=instance.pk).quantity
-        if new_quantity < prev_quantity:
-            difference = prev_quantity - new_quantity
-            instance.product.stock = instance.product.stock + difference
         else:
-            difference = new_quantity - prev_quantity
-            instance.product.stock = instance.product.stock - difference
+            instance.product.stock = instance.product.stock - new_quantity
+        if instance.product.stock < 0:
+            raise NotEnoughtStockError(product_name=instance.product.name)
 
+        instance.product.save(update_fields=["stock"])
     else:
-        instance.product.stock = instance.product.stock - new_quantity
-    if instance.product.stock < 0:
-        raise NotEnoughtStockError(product_name=instance.product.name)
-    
-    instance.product.save(update_fields=["stock"])
+        raise InvalidQuantityError(new_quantity)
+
 
 @receiver(post_delete, sender=OrderDetail, weak=False, dispatch_uid="post_delete_update_stock")
 def post_delete_update_stock(sender, instance: OrderDetail, **kwargs):
     quantity_to_restore = instance.quantity
     instance.product.stock = instance.product.stock + quantity_to_restore
     instance.product.save(update_fields=["stock"])
+
 
 @receiver(pre_save, sender=Product, weak=False, dispatch_uid="pre_save_validate_product")
 def pre_save_validate_product(sender, instance: Product, **kwargs):
