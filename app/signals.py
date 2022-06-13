@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from app.errors import InvalidStockProduct
+from app.errors import InvalidProductStock, NotEnoughtStockError
 from app.models.order_detail import OrderDetail
 from django.db.models.signals import pre_save, post_delete
 
@@ -22,8 +22,10 @@ def pre_save_update_stock(sender, instance: OrderDetail, **kwargs):
 
     else:
         instance.product.stock = instance.product.stock - new_quantity
+    if instance.product.stock < 0:
+        raise NotEnoughtStockError(product_name=instance.product.name)
+    
     instance.product.save(update_fields=["stock"])
-
 
 @receiver(post_delete, sender=OrderDetail, weak=False, dispatch_uid="post_delete_update_stock")
 def post_delete_update_stock(sender, instance: OrderDetail, **kwargs):
@@ -31,8 +33,7 @@ def post_delete_update_stock(sender, instance: OrderDetail, **kwargs):
     instance.product.stock = instance.product.stock + quantity_to_restore
     instance.product.save(update_fields=["stock"])
 
-
 @receiver(pre_save, sender=Product, weak=False, dispatch_uid="pre_save_validate_product")
 def pre_save_validate_product(sender, instance: Product, **kwargs):
     if instance.stock < 0:
-        raise InvalidStockProduct(instance.stock)
+        raise InvalidProductStock(instance.stock)
