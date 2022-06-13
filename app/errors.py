@@ -9,6 +9,17 @@ class InvalidProductStock(Exception):
         return self.message
 
 
+class InvalidQuantityError(Exception):
+    message: str = "the quantity must be a greater than 0"
+
+    def __init__(self, quantity=None):
+        if quantity:
+            self.message = self.message + f", {quantity} is not"
+
+    def __str__(self):
+        return self.message
+
+
 class NotEnoughtStockError(Exception):
     message: str = "not enought stock"
 
