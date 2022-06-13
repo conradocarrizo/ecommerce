@@ -10,7 +10,7 @@ class Order(models.Model):
     def get_total(self) -> float:
         return round(sum(details.sub_total for details in self.details.all()), 2)
 
-    def get_total_usd(self):
+    def get_total_usd(self) -> float:
         total = self.get_total()
         dolarsi_client = DolarSiClient()
         dolar_blue_price = dolarsi_client.getCurrentDolarBluePrice()

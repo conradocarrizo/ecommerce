@@ -16,3 +16,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         product = self.get_object()
         product.delete()
         return Response({"message": "Product has been deleted"}, status=204)
+
+class OrderViewSet(viewsets.ModelViewSet):
+
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
