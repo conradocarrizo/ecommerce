@@ -6,10 +6,10 @@ from app.models.product import Product
 class OrderDetail(models.Model):
 
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="details", null=True)
+        Order, on_delete=models.CASCADE, related_name="details")
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="products", null=True)
+        Product, on_delete=models.CASCADE, related_name="products")
 
     quantity = models.IntegerField()
 

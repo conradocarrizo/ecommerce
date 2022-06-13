@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'app.utils.custom_exception_handler'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
