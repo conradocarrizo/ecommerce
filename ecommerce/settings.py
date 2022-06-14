@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&n45@(in4(6_+fkw!)739+o8c0a0(9+hdn1@y+=c3^p$)_t4f*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://conrado.pythonanywhere.com/']
 
 
 # Application definition
@@ -159,6 +159,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT  = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
