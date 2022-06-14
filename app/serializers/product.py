@@ -4,7 +4,7 @@ from app.models.product import Product
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    id = serializers.CharField()
+    id = serializers.CharField(required=False)
     name = serializers.CharField(required=False)
     price = serializers.FloatField(required=False)
 
