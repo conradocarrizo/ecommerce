@@ -2,12 +2,12 @@ from requests import Response
 from rest_framework.views import exception_handler
 from rest_framework import status
 
-from app.errors import InvalidProductStock, InvalidQuantityError, NotEnoughtStockError, DuplicateProductDetailOrdenError
+from app.errors import InvalidProductStock, InvalidQuantityError, NotEnoughtStockError, DuplicatedProductDetailOrdenError
 from rest_framework.response import Response
 
 
 CUSTOM_400_ERRORS = [InvalidProductStock, InvalidQuantityError,
-                     NotEnoughtStockError, DuplicateProductDetailOrdenError]
+                     NotEnoughtStockError, DuplicatedProductDetailOrdenError]
 
 
 def custom_exception_handler(exc, context):

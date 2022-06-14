@@ -31,7 +31,7 @@ class NotEnoughtStockError(Exception):
         return self.message
 
 
-class DuplicateProductDetailOrdenError(Exception):
+class DuplicatedProductDetailOrdenError(Exception):
     message: str = "There can only be one detail order for each product in the order"
 
     def __init__(self, product_name=None):

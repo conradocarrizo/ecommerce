@@ -1,6 +1,6 @@
 from typing import List
 from rest_framework import serializers
-from app.errors import DuplicateProductDetailOrdenError
+from app.errors import DuplicatedProductDetailOrdenError
 from app.models.order import Order
 from app.models.order_detail import OrderDetail
 from app.serializers.order_detail import OrderDetailSerializer
@@ -34,7 +34,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 )
             except IntegrityError as error:
                 if "UNIQUE constraint failed" in str(error):
-                    raise DuplicateProductDetailOrdenError(
+                    raise DuplicatedProductDetailOrdenError(
                         product_name=detail.get("product").get("name"))
                 else:
                     raise error
@@ -63,7 +63,7 @@ class OrderSerializer(serializers.ModelSerializer):
                         )
                     except IntegrityError as error:
                         if "UNIQUE constraint failed" in str(error):
-                            raise DuplicateProductDetailOrdenError(
+                            raise DuplicatedProductDetailOrdenError(
                                 product_name=detail.get("product").get("name"))
                         else:
                             raise error
