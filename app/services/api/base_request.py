@@ -23,6 +23,7 @@ class BaseRequest(object):
             json=self.body,
             params=self.params,
             auth=self.auth,
+            timeout=None,
         )
         return self.raise_for_status()
 
