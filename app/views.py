@@ -22,10 +22,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-
+    
+    permission_classes = [IsAuthenticated]
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
-    permission_classes = [IsAuthenticated]
+    
 
     def destroy(self, request, *args, **kwargs):
         product = self.get_object()
