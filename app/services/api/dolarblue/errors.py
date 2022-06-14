@@ -1,4 +1,4 @@
-class DolarSiError(Exception):
+class DolarBlueError(Exception):
     message: str = ""
 
     def __init__(self, message=""):
