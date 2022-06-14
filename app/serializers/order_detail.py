@@ -6,7 +6,7 @@ from app.serializers.product import ProductSerializer
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     sub_total = serializers.ReadOnlyField()
-    product = ProductSerializer()
+    product = ProductSerializer(required=False)
     pk = serializers.IntegerField(required=False)
 
     class Meta:
