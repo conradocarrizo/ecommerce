@@ -1,4 +1,3 @@
-from typing import List
 from rest_framework import serializers
 from app.errors import DuplicatedProductDetailOrdenError
 from app.models.order import Order
@@ -11,7 +10,7 @@ class OrderSerializer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField()
     total_usd = serializers.SerializerMethodField()
     details = OrderDetailSerializer(many=True, required=False)
-
+    
     class Meta:
         model = Order
         fields = ['id', 'date_time', 'total', 'total_usd', 'details']
