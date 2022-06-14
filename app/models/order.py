@@ -1,7 +1,7 @@
 from django.db import models
 
-from app.services.api.dolarsi.dolarsi_client import DolarSiClient
-from app.services.api.dolarsi.errors import DolarSiError
+from app.services.api.dolarblue.dolarblue import DolarBlueClient
+from app.services.api.dolarblue.errors import DolarBlueError
 
 
 class Order(models.Model):
@@ -13,10 +13,10 @@ class Order(models.Model):
 
     def get_total_usd(self) -> float:
         total = self.get_total()
-        dolarsi_client = DolarSiClient()
+        dolarsi_client = DolarBlueClient()
         try:
             dolar_blue_price = dolarsi_client.getCurrentDolarBluePrice()
-        except DolarSiError:
+        except DolarBlueError:
             dolar_blue_price = None
 
         if dolar_blue_price and total:
